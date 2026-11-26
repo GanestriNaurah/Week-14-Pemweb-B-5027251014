@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #1d1b4c;
+  --color-ink-soft: #5b5990;
+  --color-paper: #f4f0ff;
+  --color-lilac: #d9ccff;
+  --color-mint: #a8ebcb;
+  --color-tang: #ff8a4c;
+  --color-blush: #ffb6d5;
+  --color-sun: #ffd95a;
+  --color-danger: #d9304f;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  @apply bg-paper font-body text-ink leading-relaxed;
+}
+:focus-visible {
+  outline: 3px solid var(--color-tang);
+  outline-offset: 2px;
+}
+
+/* ---------- Sampul buku (dekorasi, tidak bisa dengan utility biasa) ---------- */
+.cover {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 14px 12px 24px;
+  background: var(--c1);
+  color: var(--fg);
+  border: 2px solid var(--color-ink);
+  border-radius: 6px 16px 16px 6px;
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 10px;
+  background: rgba(0, 0, 0, 0.16);
+  border-right: 2px solid rgba(0, 0, 0, 0.25);
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.pat0::before {
+  background: radial-gradient(circle at 80% 22%, var(--c2) 0 34px, transparent 35px),
+    radial-gradient(circle at 20% 90%, var(--c2) 0 52px, transparent 53px);
+}
+.pat1::before {
+  background: repeating-linear-gradient(135deg, transparent 0 14px, var(--c2) 14px 22px);
+  opacity: 0.55;
+}
+.pat2::before {
+  background: radial-gradient(circle at 50% 108%, var(--c2) 0 46%, transparent 47%);
+}
+.pat3::before {
+  background: radial-gradient(var(--c2) 3px, transparent 4px) 0 0 / 18px 18px;
+  opacity: 0.8;
+}
+.cover-title,
+.cover-art,
+.cover-author {
+  position: relative;
+  z-index: 1;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 1.15rem;
+  line-height: 1.08;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.cover-art {
+  width: 66%;
+  align-self: center;
+  margin: 6px 0;
+}
+.cover-author {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* ---------- Tumpukan buku di hero ---------- */
+.stack .cover {
+  position: absolute;
+  width: 190px;
+  bottom: 0;
+  left: 50%;
+  margin-left: -95px;
+  transform-origin: 50% 100%;
+  transform: translateX(var(--x)) rotate(var(--r));
+  animation: kipas 0.9s cubic-bezier(0.2, 1.2, 0.4, 1) both;
+}
+.stack .cover:nth-child(1) { --r: -14deg; --x: -92px; }
+.stack .cover:nth-child(2) { --r: 0deg; --x: 0px; z-index: 2; animation-delay: 0.1s; }
+.stack .cover:nth-child(3) { --r: 14deg; --x: 92px; animation-delay: 0.2s; }
+@keyframes kipas {
+  from { transform: translateX(0) rotate(0); opacity: 0; }
+  to { transform: translateX(var(--x)) rotate(var(--r)); opacity: 1; }
+}
+@media (max-width: 760px) {
+  .stack .cover { width: 150px; margin-left: -75px; }
+}
+.card:hover .cover {
+  transform: rotate(-2.5deg) translateY(-6px);
+}
+.card .cover {
+  transition: transform 0.18s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
